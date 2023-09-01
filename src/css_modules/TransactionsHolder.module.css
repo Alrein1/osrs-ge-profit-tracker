@@ -1,0 +1,64 @@
+.holder {
+    display: inline-grid;
+    padding: 0 5rem 5rem 5rem;
+    width: 62.5rem;
+    height: 40rem;
+    border: 2px solid black;
+    border-radius: 0.5rem;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 0.25fr 1fr 1fr 1fr;
+    grid-template-areas:
+    "header header header header header"
+    ". . . . ."
+    ". . . . ."
+    ". . . . .";
+}
+
+.header {
+    grid-area: header;
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-areas: 
+    'filters filters total navigation navigation';
+}
+
+.header > div > button {
+    margin: 0.25rem;
+}
+
+
+.filters {
+    grid-area: filters;
+}
+
+.total {
+    grid-area: total;
+}
+
+.filters > * {
+    display: inline-block;
+}
+
+.navigation {
+    grid-area: navigation;
+    justify-self: end;
+}
+
+.navigation > * {
+    display: inline-block;
+
+}
+
+.transactions {
+    grid-area: 2 / 1 / 5 / 6;
+    display: inline-grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 1rem;
+    
+}
+
+.selected { 
+    background-color: rgb(51, 146, 235);
+    color: white;
+}

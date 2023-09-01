@@ -1,0 +1,45 @@
+.transaction {
+    text-align: left;
+    display: inline-grid;
+    font-size: 0.825rem;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 15rem 2rem;
+    grid-template-areas: 
+    "info info"
+    "sellButton deleteButton";
+    padding: 0.5rem;
+    border: 2px solid white;
+    border-radius: 0.5rem;
+}
+
+.info {
+    grid-area: info;
+}
+
+.itemName {
+    font-size: 0.9rem;
+}
+
+.transaction > img {
+    width: 5rem;
+}
+
+#sellButton {
+    grid-area: sellButton;
+    background-color: rgb(51, 146, 235);
+    color: white;
+    justify-self: start;
+    font-size: 0.7rem;
+}
+
+#sellPriceField {
+    width: 5rem;
+}
+
+#deleteButton {
+    grid-area: deleteButton;
+    background-color: rgb(228, 80, 80);
+    color: white;
+    justify-self: end;
+}
+
