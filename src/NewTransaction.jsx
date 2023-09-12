@@ -10,17 +10,7 @@ function NewTransaction({setTransactions}) {
     const [formItemQuantity, setFormItemQuantity] = useState('');
     const [addTransactionMode, toggleAddTransactionMode] = useState(false);
     const [invalidInputError, setInvalidInputError] = useState(false);
-    const formatItemName = (itemName) => {
-        let formattedItemName = '';
-        for (let i = 0; i <= itemName.length; i++) {
-            if (itemName.charAt(i) === ' ') {
-                formattedItemName += '%20';
-            } else {
-                formattedItemName += itemName.charAt(i);
-            }
-        }
-        return formattedItemName;
-    }
+    
     const clearFields = () => {
         setFormItemName('');
         setFormItemQuantity('');
@@ -32,6 +22,27 @@ function NewTransaction({setTransactions}) {
         }
         return false;
     }
+    const fetchData = () => {
+        if (validateInput()) {
+            fetch(`/api/m=itemdb_oldschool/api/catalogue/items.json?category=1&alpha=${formItemName.toLowerCase()}&page=1`)
+            .then(response => response.json())
+            .then(jsonData => {
+                const item = jsonData.items[0];
+                if(!item) {
+                    return
+                }
+                setTransactions(prev => [{quantity: formItemQuantity, buyPrice: formItemBuyPrice, sellPrice: 0, profit: 0, name: item.name, icon: item.icon_large, id: `${item.id}-${Math.floor(Math.random() * 1000)}`, sold: false}, ...prev])
+            })
+            .catch(err => {
+                console.log(err);
+            })
+            clearFields();
+            toggleAddTransactionMode(!addTransactionMode)  
+            setInvalidInputError(false);
+        } else {
+            setInvalidInputError(true);
+        }
+    }
     return(
         <div className='newTransaction'>
             {
@@ -39,35 +50,17 @@ function NewTransaction({setTransactions}) {
             <div>
                 <form className='addTransactionForm' autoComplete='off' onSubmit={(e) => {
                     e.preventDefault();
-                    if (validateInput()) {
-                        fetch(`/api/m=itemdb_oldschool/api/catalogue/items.json?category=1&alpha=${formatItemName(formItemName.toLowerCase())}&page=1`)
-                        .then(response => response.json())
-                        .then(jsonData => {
-                            const item = jsonData.items[0];
-                            if(!item) {
-                                return
-                            }
-                            setTransactions(prev => [{quantity: formItemQuantity, buyPrice: formItemBuyPrice, sellPrice: 0, profit: 0, name: item.name, icon: item.icon_large, id: `${item.id}-${Math.floor(Math.random() * 1000)}`, sold: false}, ...prev])
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        })
-                        clearFields();
-                        toggleAddTransactionMode(!addTransactionMode)  
-                        setInvalidInputError(false);
-                    } else {
-                        setInvalidInputError(true);
-                    }
+                    fetchData();
                 }}>
                     <div className='labels'>
-                        <label htmlFor='itemName'>Name </label>
-                        <label htmlFor='quantity'>Quantity </label>
-                        <label htmlFor='buyPrice'>Buy price </label>
+                        <label className='newTransactionLabel' htmlFor='itemName'>Name </label>
+                        <label className='newTransactionLabel' htmlFor='quantity'>Quantity </label>
+                        <label className='newTransactionLabel' htmlFor='buyPrice'>Buy price </label>
                     </div>
                     <div className='inputs'>
-                        <input name='itemName' value={formItemName} onChange={({target}) => setFormItemName(target.value)}/>
-                        <input name='quantity' value={formItemQuantity} onChange={({target}) => setFormItemQuantity(target.value)}/>
-                        <input name='buyPrice' value={formItemBuyPrice} onChange={({target}) => setFormItemBuyPrice(target.value)}/>
+                        <input className='newTransactionInput' name='itemName' value={formItemName} onChange={({target}) => setFormItemName(target.value)}/>
+                        <input className='newTransactionInput' value={formItemQuantity} onChange={({target}) => setFormItemQuantity(target.value)}/>
+                        <input className='newTransactionInput' value={formItemBuyPrice} onChange={({target}) => setFormItemBuyPrice(target.value)}/>
                     </div>
                     
                     <button id='cancel' onClick={() => {
@@ -85,7 +78,7 @@ function NewTransaction({setTransactions}) {
                 </form>
             </div>
             : 
-            <button id='addModeButton' onClick={() => {
+            <button id='toggleAddModeButton' onClick={() => {
                 toggleAddTransactionMode(!addTransactionMode)
             }}>
                 New transaction

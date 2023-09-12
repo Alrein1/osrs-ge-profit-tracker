@@ -49,7 +49,7 @@ input {
     grid-area: labels;
 }
 
-.labels > label {
+.newTransactionLabel {
     display: block;
     padding: 0.25rem;
     text-align: right;
@@ -59,7 +59,7 @@ input {
     grid-area: inputs;
 }
 
-.inputs > input {
+.newTransactionInput {
     width: 9rem;
     margin-top: 0.25rem;
 }
@@ -69,7 +69,7 @@ input {
     justify-self: center;
 }
 
-#addModeButton {
+#toggleAddModeButton, #add {
     background-color: rgb(51, 146, 235);
     color: white;
 }
@@ -77,8 +77,6 @@ input {
 #add {
     grid-area: add;
     justify-self: end;
-    background-color: rgb(51, 146, 235);
-    color: white
 }
 
 #cancel {
